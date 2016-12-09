@@ -26,6 +26,11 @@ module.exports = {
     app.delete('/question/', function (req, res) {
         question.delete(req.params.id, res);
     });
+    //Authentication
+
+    app.post('/authenticate', function (req, res) {
+        user.authenticate(req, res);
+    });
 
 	//User	     
     app.get('/todo/', function(req, res) {
