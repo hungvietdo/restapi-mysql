@@ -1,6 +1,7 @@
 var todo = require('./models/todo');
 var user = require('./models/user');
 var question = require('./models/question');
+var authenticate = require('./models/authenticate');
  
 module.exports = {
   configure: function(app) {
@@ -26,13 +27,13 @@ module.exports = {
     app.delete('/question/', function (req, res) {
         question.delete(req.params.id, res);
     });
-    //Authentication
 
-    app.post('/authenticate', function (req, res) {
-        user.authenticate(req, res);
+    //Authentication
+    app.post('/authenticate/', function (req, res) {
+        authenticate.post(req.body, res);
     });
 
-	//User	     
+    //User
     app.get('/todo/', function(req, res) {
         todo.get(res);
     });
@@ -41,8 +42,8 @@ module.exports = {
       todo.create(req.body, res);
     });
  
-    app.put('/user/', function(req, res) {
-      user.update(req.body, res);
+    app.get('/user/', function(req, res) {
+      user.get(res);
     });
  
     app.delete('/todo/:id/', function(req, res) {
