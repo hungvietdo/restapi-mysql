@@ -15,13 +15,14 @@ function Question() {
         connection.acquire(function(err, con) {
           var i_question =[];
           con.query('select U_ID from user where username = ?',question.username, function(err, result) {
-                con.release();
-                i_question.U_ID = result[0].U_ID;
-                i_question.title = question.title;
-                i_question.content = question.content;
-                i_question.Q_ID = 3241;
-                console.log(question);return;
-                con.query('insert into question set ?', question, function(e, r) {
+                //con.release();
+                i_question = {
+                  "U_ID":result[0].U_ID,
+                  "title":question.title,
+                  "content":question.content
+                  };
+                console.log(i_question);//return;
+                con.query('insert into question set ?', i_question, function(e, r) {
                     con.release();
                     if (e) {
                         res.send({status: 1, message:'Insert question failed.'});

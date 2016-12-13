@@ -53,7 +53,6 @@ module.exports = {
             title:req.body.title,
             content:req.body.content}),
           res);
-        console.log(req.body);
     });
 
     //Update data
