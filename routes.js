@@ -3,7 +3,7 @@ var user = require('./models/user');
 var question = require('./models/question');
 var authenticate = require('./models/authenticate');
 var jwt    = require('jsonwebtoken');
-
+var username = '';
 module.exports = {
   configure: function(app) {
     //Question
@@ -18,12 +18,13 @@ module.exports = {
         var token = req.body.token || req.param('token') || req.headers['x-access-token'];
         // decode token
         if (token) {
-            jwt.verify(token, app.get('superSecret'), function(err, decoded) {          
+            jwt.verify(token, app.get('superSecret'), function(err, decoded) {
                 if (err) {
-                    return res.json({ success: false, message: 'Failed to authenticate token.' });      
+                    return res.json({ success: false, message: 'Failed to authenticate token.' });
                 } else {
                     // if everything is good, save to request for use in other routes
-                    req.decoded = decoded;  
+                    req.decoded = decoded;
+                    username = req.decoded.username;
                     next();
                 }
             });
@@ -47,7 +48,11 @@ module.exports = {
 
     //Insert question
     app.post('/question/', function (req, res) {
-        question.create(req.body,res);
+        question.create(
+          ({username:username,
+            title:req.body.title,
+            content:req.body.content}),
+          res);
         console.log(req.body);
     });
 
